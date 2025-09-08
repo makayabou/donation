@@ -471,7 +471,7 @@ msgstr "Partenaire"
 #: model_terms:ir.ui.view,arch_db:donation_base.donation_tax_receipt_form
 #, fuzzy
 msgid "Print"
-msgstr "Date d'impression"
+msgstr "Imprimer"
 
 #. module: donation_base
 #: model:ir.model.fields,field_description:donation_base.field_donation_tax_receipt__print_date
