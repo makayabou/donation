@@ -694,7 +694,6 @@ class DonationLine(models.Model):
         string='Description',
         store=True, 
         readonly=False,
-        tracking=True,
     )
     product_is_donation = fields.Boolean(
         related="product_id.is_donation", store=True, string="Product Type donation"
