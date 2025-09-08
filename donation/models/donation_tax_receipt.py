@@ -4,6 +4,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class DonationTaxReceipt(models.Model):
@@ -12,6 +13,21 @@ class DonationTaxReceipt(models.Model):
     donation_ids = fields.One2many(
         "donation.donation", "tax_receipt_id", string="Related Donations"
     )
+
+    first_donation_date = fields.Date(
+        store=True, 
+        readonly=True, 
+        compute="_compute_first_donation_date"
+    )
+
+    @api.depends("donation_ids.donation_date")
+    def _compute_first_donation_date(self):
+        for receipt in self:
+            if self.donation_ids and len(self.donation_ids) > 1:
+                first_donation = min(receipt.donation_ids, key=lambda d: d.donation_date)
+                receipt.first_donation_date = first_donation.donation_date
+            else:
+                receipt.first_donation_date = False
 
     @api.model
     def update_tax_receipt_annual_dict(
