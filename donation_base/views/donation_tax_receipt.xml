@@ -10,7 +10,7 @@
         <field name="name">donation.tax.receipt.form</field>
         <field name="model">donation.tax.receipt</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="false" edit="false" delete="false">
                 <header>
                     <button
                         name="action_send_tax_receipt"
@@ -19,9 +19,10 @@
                         class="btn-primary"
                     />
                     <button
-                        name="%(report_donation_tax_receipt)d"
-                        type="action"
+                        name="action_print_receipt"
+                        type="object"
                         string="Print"
+                        class="btn-primary"
                     />
                 </header>
                 <sheet>
@@ -51,7 +52,7 @@
         <field name="name">donation.tax.receipt.list</field>
         <field name="model">donation.tax.receipt</field>
         <field name="arch" type="xml">
-            <list>
+            <list create="false" delete="false" edit="false">
                 <field name="number" decoration-bf="1" />
                 <field name="partner_id" />
                 <field name="date" />

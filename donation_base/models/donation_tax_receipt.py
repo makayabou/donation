@@ -54,6 +54,11 @@ class DonationTaxReceipt(models.Model):
         readonly=True,
     )
 
+    def write(self, vals):
+        if not self.env.context.get("allow_tax_receipt_write"):
+            raise UserError(_("Tax receipts cannot be modified manually. They must be generated from donations."))
+        super().write(vals)
+    
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -99,3 +104,10 @@ class DonationTaxReceipt(models.Model):
             "context": ctx,
         }
         return action
+
+    def action_print_receipt(self):
+        today = fields.Date.context_today(self)
+        for receipt in self:
+            if not receipt.print_date:
+                receipt.with_context(allow_tax_receipt_write=True).write({"print_date": today})
+        return self.env.ref("donation_base.report_donation_tax_receipt").report_action(self)

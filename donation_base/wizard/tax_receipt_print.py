@@ -27,8 +27,4 @@ class DonationTaxReceiptPrint(models.TransientModel):
         self.ensure_one()
         if not self.receipt_ids:
             raise UserError(_("There are no tax receipts to print."))
-        today = fields.Date.context_today(self)
-        self.receipt_ids.write({"print_date": today})
-        return self.env.ref("donation_base.report_donation_tax_receipt").report_action(
-            self.receipt_ids
-        )
+        return self.receipt_ids.action_print_receipt()
